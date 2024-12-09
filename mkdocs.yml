@@ -2,10 +2,13 @@ site_name: DocuGenius
 theme:
   name: material
   palette:
-    primary: black
-    accent: orange
+    primary: white
+    accent: red
   font:
     text: "Poppins"
+  features:
+    - content.code.copy
+    - content.code.select
 
 plugins:
   - search
@@ -22,3 +25,11 @@ plugins:
             docstring_options:
               ignore_init_summary: false
               docstring_section_style: list
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

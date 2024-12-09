@@ -1,57 +1,78 @@
 # Docugenius
 
-Docugenius is a Python library that uses large language models (LLMs) to automatically generate high-quality documentation for your code. With support for multiple docstring formats and customizable options, Docugenius simplifies the process of writing clear and professional documentation.
+<img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white" />
+<img src="https://img.shields.io/badge/pypi-3775A9?style=for-the-badge&logo=pypi&logoColor=white" />
+<img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" />
 
-## Features
-- Automatically generate docstrings for your Python code.
-- Support for popular docstring formats, including Google, NumPy, and Sphinx.
-- Flexible CLI interface for easy integration into your workflow.
-- Customize generated docstrings with details like exceptions, return values, and examples.
-- Save output to a specified file or overwrite the input file.
 
----
+Docugenius is a tool that generates documentation for your python code using LLMs. 
+The library provides a simple CLI interface to generate documentation for your python code.
+
+[Documentation](https://docugenius.readthedocs.io/en/latest/)
 
 ## Installation
-
-You can install Docugenius via pip:
 
 ```bash
 pip install docugenius
 ```
 
-## Quickstart
-To generate documentation for a Python file, simply run:
+## Quickstart
+
+Before running docugenius, make sure you exported your OpenAI API key as an environment variable.
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+```
+
+
+To generate documentation for your python code, run the following command:
 
 ```bash
 docugenius path/to/python/code.py
 ```
 
-By default, Docugenius uses the OpenAI `openai:gpt-4o` model. You can specify a different model using the `--model` flag:
+The default model used is OpenAI `openai:gpt-4o`, but you can specify a different model using the `--model` flag.
 
-```bash
+```
 docugenius path/to/python/code.py --model openai:gpt-4-mini
 ```
+
+See the Supported Models section for a list of supported models. [Supported Models](supported-models.md)
+
+If you want to run docugenius on an entire directory, you can pass the directory path as input.
+
+```bash
+docugenius path/to/python/directory
+```
+
 
 
 ## CLI Usage
 
 ```bash
-usage: docugenius [-h] [--model {openai:gpt-4o,openai:gpt-4o-mini}] [--docstring-format {google,numpy,sprinx}] [--add-raises] [--add-returns] [--add-examples] [--output-file OUTPUT_FILE]
-               input_file
+usage: docugenius [-h] [--model {openai:gpt-4o,openai:gpt-4o-mini}] [--docstring-format {google,numpy,sprinx}] [--skip-raises] [--skip-returns]
+                  [--skip-examples] [--output-path OUTPUT_PATH]
+                  input_path
 
 positional arguments:
-  input_file            The path to the input file.
+  input_path            The path to the input. You can also pass a directory to process all files in it.
 
 options:
-  -h, --help            Show this help message and exit.
+  -h, --help            show this help message and exit
   --model {openai:gpt-4o,openai:gpt-4o-mini}, -m {openai:gpt-4o,openai:gpt-4o-mini}
                         The model to use for generating docstrings.
   --docstring-format {google,numpy,sprinx}, -d {google,numpy,sprinx}
                         The format of the generated docstrings.
-  --add-raises, -r      Include information about exceptions raised by the code.
-  --add-returns, -R     Include information about the return values.
-  --add-examples, -e    Add usage examples to the docstrings.
-  --output-file OUTPUT_FILE, -o OUTPUT_FILE
-                        Path to save the generated docstrings. Defaults to overwriting the input file.
+  --skip-raises, -r     Whether to include information about exceptions raised by the code.
+  --skip-returns, -R    Whether to include information about the return value of the code.
+  --skip-examples, -e   Whether to include examples of how to use the code.
+  --output-path OUTPUT_PATH, -o OUTPUT_PATH
+                        The path to the output file/destination. If not provided, the output will overwrite the input file. If a directory is passed as
+                        input, this should be a directory.
+```
 
+The output overwrites the input file. If you want to save the output to a different file, you can use the `--output-path` flag.
+
+```bash
+docugenius path/to/python/code.py --output path/to/output/file.py
 ```
