@@ -1,0 +1,3 @@
+# CLI
+
+::: docugenius.cli.main

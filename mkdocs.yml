@@ -1,0 +1,24 @@
+site_name: DocuGenius
+theme:
+  name: material
+  palette:
+    primary: black
+    accent: orange
+  font:
+    text: "Poppins"
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            merge_init_into_class: true
+            inherited_members: true
+            show_root_heading: true
+            show_root_full_path: true
+            heading_level: 3
+            docstring_options:
+              ignore_init_summary: false
+              docstring_section_style: list
