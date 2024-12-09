@@ -30,7 +30,7 @@ class RunArgs(BaseModel):
     add_raises: bool = True
     add_returns: bool = True
     add_examples: bool = True
-    output_file: str = None
+    output_file: str | None = None
 
 
 def run(args: RunArgs):
