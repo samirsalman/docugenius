@@ -1,14 +1,12 @@
 # Docugenius
+<div>
 
-<img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white" />
-<img src="https://img.shields.io/badge/pypi-3775A9?style=for-the-badge&logo=pypi&logoColor=white" />
-<img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" />
-
-
+[Documentation](https://samirsalman.github.io/docugenius/)
+</div>
 Docugenius is a tool that generates documentation for your python code using LLMs. 
 The library provides a simple CLI interface to generate documentation for your python code.
 
-[Documentation](https://docugenius.readthedocs.io/en/latest/)
+
 
 ## Installation
 
