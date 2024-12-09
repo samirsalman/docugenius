@@ -7,15 +7,15 @@ _DEFAULT_PROMPT = Template(
     """
 Given a python code, that could contains class(es), function(s), method(s), variable(s), etc. generate a docstring for it using the ${docstring_format} format.
 
-% if add_raises or add_returns or add_examples:
+% if not (skip_raises and skip_returns and skip_examples):
 The generated docstring should include for each class, function, method, variable, etc.:
-% if add_raises:
+% if not skip_raises:
 - The exceptions that the code can raise.
 % endif
-% if add_returns:
+% if not skip_returns:
 - The return value of the code.
 % endif
-% if add_examples:
+% if not skip_examples:
 - Examples of how to use the code.
 % endif
 
@@ -44,9 +44,9 @@ class Genius(ABC):
 
     Args:
         docstring_format (Literal["google", "numpy", "sprinx"], optional): The format of the docstring. Defaults to "google".
-        add_raises (bool, optional): Whether to include exceptions in the docstring. Defaults to True.
-        add_returns (bool, optional): Whether to include return values in the docstring. Defaults to True.
-        add_examples (bool, optional): Whether to include examples in the docstring. Defaults to True.
+        skip_raises (bool, optional): Whether to include exceptions in the docstring. Defaults to False.
+        skip_returns (bool, optional): Whether to include return values in the docstring. Defaults to False.
+        skip_examples (bool, optional): Whether to include examples in the docstring. Defaults to False.
 
     Raises:
         ValueError: If the provided docstring_format is not valid.
@@ -55,9 +55,9 @@ class Genius(ABC):
     def __init__(
         self,
         docstring_format: Literal["google", "numpy", "sprinx"] = "google",
-        add_raises: bool = True,
-        add_returns: bool = True,
-        add_examples: bool = True,
+        skip_raises: bool = False,
+        skip_returns: bool = False,
+        skip_examples: bool = False,
         **kwargs,
     ):
         self.docstring_format = docstring_format
@@ -65,9 +65,9 @@ class Genius(ABC):
             raise ValueError(
                 f"Invalid docstring format {docstring_format}. Must be one of 'google', 'numpy', or 'sprinx'."
             )
-        self.add_raises = add_raises
-        self.add_returns = add_returns
-        self.add_examples = add_examples
+        self.skip_raises = skip_raises
+        self.skip_returns = skip_returns
+        self.skip_examples = skip_examples
         super().__init__()
 
     @property
@@ -84,9 +84,9 @@ class Genius(ABC):
         """
         return self._prompt.render(
             docstring_format=self.docstring_format,
-            add_raises=self.add_raises,
-            add_returns=self.add_returns,
-            add_examples=self.add_examples,
+            skip_raises=self.skip_raises,
+            skip_returns=self.skip_returns,
+            skip_examples=self.skip_examples,
         )
 
     @abstractmethod
@@ -117,7 +117,7 @@ class Genius(ABC):
         output = re.findall(r"```generated-python-code\n(.*?)\n```", output, re.DOTALL)
         if output:
             return output[0].strip()
-        raise ValueError("No code block found in the output.")
+        return output
 
     def generate(self, code: str) -> str:
         """
@@ -129,5 +129,7 @@ class Genius(ABC):
         Returns:
             str: The code with the generated docstring added.
         """
+        if not code:
+            return code
         output = self._generate_docstring(code)
         return self.clean_llm_output(output)

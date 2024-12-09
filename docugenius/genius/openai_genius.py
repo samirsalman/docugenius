@@ -10,15 +10,15 @@ class OpenAIGenius(Genius):
     Args:
         model (str): The model to use for generating docstrings.
         docstring_format (Literal["google", "numpy", "sprinx"], optional): The format of the docstring. Defaults to "google".
-        add_raises (bool, optional): Whether to include exceptions in the docstring. Defaults to True.
-        add_returns (bool, optional): Whether to include return values in the docstring. Defaults to True.
-        add_examples (bool, optional): Whether to include examples in the docstring. Defaults to True.
+        skip_raises (bool, optional): Whether to include exceptions in the docstring. Defaults to False.
+        skip_returns (bool, optional): Whether to include return values in the docstring. Defaults to False.
+        skip_examples (bool, optional): Whether to include examples in the docstring. Defaults to False.
 
     Raises:
         ValueError: If the provided model is not valid.
 
     Examples:
-        >>> genius = OpenAIGenius(model="gpt-3.5-turbo")
+        >>> genius = OpenAIGenius(model="gpt-4o-mini")
         >>> print(genius.docstring_format)
         google
     """
@@ -27,13 +27,29 @@ class OpenAIGenius(Genius):
         self,
         model: str,
         docstring_format: Literal["google", "numpy", "sprinx"] = "google",
-        add_raises: bool = True,
-        add_returns: bool = True,
-        add_examples: bool = True,
+        skip_raises: bool = False,
+        skip_returns: bool = False,
+        skip_examples: bool = False,
     ):
+        """
+        Initialize the OpenAIGenius instance.
+
+        Args:
+            model (str): The model to use for generating docstrings.
+            docstring_format (Literal["google", "numpy", "sprinx"], optional): The format of the docstring. Defaults to "google".
+            skip_raises (bool, optional): Whether to include exceptions in the docstring. Defaults to False.
+            skip_returns (bool, optional): Whether to include return values in the docstring. Defaults to False.
+            skip_examples (bool, optional): Whether to include examples in the docstring. Defaults to False.
+
+        Raises:
+            ValueError: If the provided model is not valid.
+
+        Examples:
+            >>> genius = OpenAIGenius(model="gpt-4o-mini")
+        """
         import openai
 
-        super().__init__(docstring_format, add_raises, add_returns, add_examples)
+        super().__init__(docstring_format, skip_raises, skip_returns, skip_examples)
         self._client = openai.OpenAI()
         self.model = model
 
