@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -23,6 +24,8 @@ jobs:
           pip install -e .[dev]
           pip install mkdocs mkdocs-material
 
-      - name: Build and publish
+      - name: Deploy documentation
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdocs gh-deploy
+          mkdocs gh-deploy --force
