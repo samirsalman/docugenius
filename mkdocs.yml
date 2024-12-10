@@ -1,6 +1,7 @@
 site_name: DocuGenius
 theme:
   name: material
+  logo: logo.png
   palette:
     primary: white
     accent: red
