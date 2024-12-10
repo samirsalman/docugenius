@@ -13,13 +13,13 @@ class YourCustomGenius(Genius):
     def __init__(
        self,
         docstring_format: Literal["google", "numpy", "sprinx"] = "google",
-        add_raises: bool = True,
-        add_returns: bool = True,
-        add_examples: bool = True,
+        skip_raises: bool = False,
+        skip_returns: bool = False,
+        skip_examples: bool = False,
         custom_param:int = 0,
         **kwargs,
     ):
-        super().__init__(docstring_format, add_raises, add_returns,add_examples)
+        super().__init__(docstring_format, skip_raises, skip_returns,skip_examples)
         self.custom_param = custom_param
 
 
