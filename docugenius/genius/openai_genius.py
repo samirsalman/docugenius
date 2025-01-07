@@ -78,5 +78,6 @@ class OpenAIGenius(Genius):
             ],
             temperature=0,
             top_p=1,
+            max_tokens=len(code) * 2,
         )
         return response.choices[0].message.content

@@ -3,10 +3,13 @@ from typing import Literal
 
 from mako.template import Template
 
+from docugenius.common.code_utils import is_skippable
+
 _DEFAULT_PROMPT = Template(
     """
 Given a python code, that could contains class(es), function(s), method(s), variable(s), etc. generate a docstring for it using the ${docstring_format} format.
 
+# Requirements
 % if not (skip_raises and skip_returns and skip_examples):
 The generated docstring should include for each class, function, method, variable, etc.:
 % if not skip_raises:
@@ -21,18 +24,20 @@ The generated docstring should include for each class, function, method, variabl
 
 % endif
 
-The output code must be only the input code populated with the generated docstrings.
-No additional code or comments should be added.
-No bug fixing or code refactoring should be done.
+# Rules
+- Be sure to not introduce any avoided characters in the generated docstring, respect the indentation and the line breaks.
+- Make sure to keep the original code as it is, without any modification.
+- The output code must be only the input code populated with the generated docstrings.
+- No bug fixing or code refactoring should be done.
+- The code should be able to run without any error after adding the docstrings.
+- If you find constants or imports in the code, you can skip them and leave them as they are.
 
+# Output Format
 Return the output code in the following format:
-
-
 
 ```generated-python-code
 <OUTPUT_CODE>
 ```
-
 No other output format is accepted.
 """
 )
@@ -116,7 +121,10 @@ class Genius(ABC):
 
         output = re.findall(r"```generated-python-code\n(.*?)\n```", output, re.DOTALL)
         if output:
-            return output[0].strip()
+            output = output[0]
+        else:
+            output = ""
+
         return output
 
     def generate(self, code: str) -> str:
@@ -129,7 +137,8 @@ class Genius(ABC):
         Returns:
             str: The code with the generated docstring added.
         """
-        if not code:
+        if not code or is_skippable(code):
             return code
+
         output = self._generate_docstring(code)
         return self.clean_llm_output(output)
